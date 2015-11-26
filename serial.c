@@ -1,5 +1,7 @@
-/* 
+
+/*
   Basic matrix-matrix multiplication for HPSC OpenMP Assignment
+  Siddharth Singh, modified for assignment.
   Michael Oberg, modified from code provided by Ian Karlin
 */
 
@@ -8,7 +10,7 @@
 #include <sys/types.h>
 #include <stdlib.h>
 
-double calctime(struct timeval start, struct timeval end) 
+double calctime(struct timeval start, struct timeval end)
 {
   double time = 0.0;
 
@@ -23,7 +25,7 @@ double calctime(struct timeval start, struct timeval end)
   return time;
 }
 
-int main() 
+int main()
 {
   int    i, j, k;
   int    n = 1024;
