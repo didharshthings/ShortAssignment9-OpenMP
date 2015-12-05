@@ -8,6 +8,7 @@
 #include <sys/time.h>
 #include <sys/types.h>
 #include <stdlib.h>
+#include <omp.h>
 
 char *program = "OpenMP-manual";
 
@@ -33,7 +34,7 @@ int main()
   double *A;
   double *B;
   double *C;
-
+  int num_threads;
   double time;
   struct timeval start;
   struct timeval end;
@@ -54,15 +55,20 @@ int main()
   // timed loop
   gettimeofday(&start, NULL);
 /* Insert OpenMP #pragma(s) here */
-  for (i = 0; i <n; i++)
+#pragma omp parallel shared(A,B,C) private(i,j,k) num_threads(8)
+{ 
+num_threads = omp_get_num_threads();
+#pragma omp for nowait
+ for (i = 0; i <n; i++)
     for(j = 0; j < n; j++)
       for(k = 0; k < n; k++)
         A[i*n + j] += B[i*n + k] * C[j*n + k];
-  gettimeofday(&end, NULL);
+} 
+ gettimeofday(&end, NULL);
 
   // calc & print results
   time = calctime(start, end);
   printf("%s matrix-matrix multiplcation time: %lf(s) for matrices of size: %dx%d\n", program, time, n, n);
-
+  printf(" Number of threads - %d\n",num_threads);
   return 0;
 }
